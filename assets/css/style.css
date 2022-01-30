@@ -4,6 +4,7 @@ body {
   line-height: 1;
 }
 
+/* used for changing text in js I think */
 textarea{
   background: transparent;
   border: none;
@@ -21,6 +22,7 @@ textarea{
   border-bottom: 10px solid black;
 }
 
+/* not sure where to use this yet, putting it with task description */
 .description{
   white-space: pre-wrap;
 }
@@ -42,6 +44,7 @@ textarea{
   border-top: 1px dashed #000000;
 }
 
+/* color coding for the tasks */
 .past {
   background-color: #d3d3d3;
   color: white;
@@ -57,6 +60,7 @@ textarea{
   color: white;
 }
 
+/* for once I have the save icon */
 .saveBtn {
   border-left: 1px solid black;
   border-top-right-radius: 15px;
