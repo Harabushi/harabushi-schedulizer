@@ -64,13 +64,13 @@ $(".time-block").on("blur", "textarea", function() {
   .val()
   .trim();
 
-  // get parent div.time-block don't actually need this I think
-  let status = $(this)
-  .closest(".time-block")
-  .attr("id");
+  // get parent div.time-block
+  // let status = $(this)
+  // .closest(".time-block")
+  // .attr("id");
 
-  schedule[status][0] = text;
-  saveSchedule();
+  // schedule[status][0] = text;
+  // saveSchedule();
   // console.log(schedule);
 
   let taskDiv = $("<div>")
@@ -79,6 +79,8 @@ $(".time-block").on("blur", "textarea", function() {
 
   // replace textarea with div element
   $(this).replaceWith(taskDiv);
+
+  timeCheck();
 
   // empty out array instead of array of ""
   // if ( text == "" ) {
@@ -111,6 +113,24 @@ function auditSchedule (currentTime, scheduleEl) {
 }
 
 // save button saves $(this) to page and calls localStorage save
+$(".icon").click(function() {
+  console.log("a button was clicked")
+
+    // get changed text area text
+    let text = $(this).parent().siblings(".description").text();
+
+    console.log(text)
+    // get parent div.time-block
+    let status = $(this)
+    .closest(".time-block")
+    .attr("id");
+    console.log(status)
+
+    schedule[status][0] = text;
+    saveSchedule();
+    console.log(schedule);
+
+});
 
 // moment for current day and time
 function timeCheck() {

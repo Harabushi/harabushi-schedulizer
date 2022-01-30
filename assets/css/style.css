@@ -4,7 +4,6 @@ body {
   line-height: 1;
 }
 
-/* used for changing text in js I think */
 textarea{
   background: transparent;
   border: none;
@@ -22,7 +21,6 @@ textarea{
   border-bottom: 10px solid black;
 }
 
-/* not sure where to use this yet, putting it with task description */
 .description{
   white-space: pre-wrap;
 }
