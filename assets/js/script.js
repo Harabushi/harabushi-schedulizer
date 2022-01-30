@@ -1,4 +1,5 @@
 let schedule = {};
+let date;
 
 // localStorage load function JSON.parse array of objects
 function loadSchedule () {
@@ -22,7 +23,7 @@ function loadSchedule () {
 
   // loop to fill in schedule
   $.each(schedule, function(time, text) {
-    console.log(time, text)
+    // console.log(time, text)
 
     // arr.forEach(function(schedule) {
       $("#" + time + " .description").text(text);
@@ -32,7 +33,7 @@ function loadSchedule () {
 
 // localStorage save function array of objects
 function saveSchedule() {
-  console.log(schedule);
+  // console.log(schedule);
   localStorage.setItem("schedule", JSON.stringify(schedule));
 };
 
@@ -87,14 +88,55 @@ $(".time-block").on("blur", "textarea", function() {
   // }
 });
 
+// check current time and adjust colors for past, present, future
+function auditSchedule (currentTime, scheduleEl) {
+  //console.log(currentTime);
+  // debugger;
+  let timeBlock = $(scheduleEl).find(" > div.description");
+  let timeSlot = $(scheduleEl).attr("data-time");
+  // console.log(currentTime)
+  // console.log(timeSlot)
+  $(timeBlock).removeClass("bg-secondary bg-danger bg-success");
+
+  if ( currentTime < timeSlot ) {
+    $(timeBlock).addClass("bg-success");
+  }
+  else if ( currentTime === timeSlot ) {
+    $(timeBlock).addClass("bg-danger");
+  }
+  else if ( currentTime > timeSlot ) {
+    $(timeBlock).addClass("bg-secondary");
+  }
+
+}
+
 // save button saves $(this) to page and calls localStorage save
 
-// moment for current day and time, print time to screen
+// moment for current day and time
+function timeCheck() {
+  let currentDate = moment().format("MMM Do [,] YYYY");
+  let currentTime = moment().format("H");
 
-// color text areas for past, present, future
+  $(".time-block").each(function() {
+    auditSchedule(currentTime, $(this))
+  });
+  
+  // check for date changeover
+  if ( currentDate !== date ){
+    setDate(currentDate);
+  };
+  // else {
+  //   console.log("the date is the same")
+  // };
 
-// check current time and adjust colors
+  setTimeout(timeCheck, 5000);
+};
 
-// setInterval check for hour changeover
+function setDate(currentDate) {
+  date = currentDate;
+  $("#currentDay").text(date)
+  console.log(date)
+}
 
 loadSchedule ();
+timeCheck ();
