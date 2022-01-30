@@ -1,23 +1,41 @@
-let tasks = {};
+let schedule = {};
 
-function loadTasks () {
-  tasks = {
-    "8am": [],
-    "9am": [],
-    "10am": [],
-    "11am": [],
-    "12pm": [],
-    "1pm": [],
-    "2pm": [],
-    "3pm": [],
-    "4pm": [],
-    "5pm": [],
+// localStorage load function JSON.parse array of objects
+function loadSchedule () {
+
+  schedule = JSON.parse(localStorage.getItem("schedule"));
+
+  if (!schedule) {
+    schedule = {
+      "8am": [],
+      "9am": [],
+      "10am": [],
+      "11am": [],
+      "12pm": [],
+      "1pm": [],
+      "2pm": [],
+      "3pm": [],
+      "4pm": [],
+      "5pm": [],
+    };
   }
-}
 
-function saveTasks () {
-  
-}
+  // loop to fill in schedule
+  $.each(schedule, function(time, text) {
+    console.log(time, text)
+
+    // arr.forEach(function(schedule) {
+      $("#" + time + " .description").text(text);
+    // });
+  });
+};
+
+// localStorage save function array of objects
+function saveSchedule() {
+  console.log(schedule);
+  localStorage.setItem("schedule", JSON.stringify(schedule));
+};
+
 // jquery target text info for clicked timeblock
 $(".time-block").on("click", ".description", function() {
   //console.log($(this))
@@ -46,12 +64,13 @@ $(".time-block").on("blur", "textarea", function() {
   .trim();
 
   // get parent div.time-block don't actually need this I think
-  var status = $(this)
+  let status = $(this)
   .closest(".time-block")
   .attr("id");
 
-  tasks[status].text = text;
-  console.log(tasks);
+  schedule[status][0] = text;
+  saveSchedule();
+  // console.log(schedule);
 
   let taskDiv = $("<div>")
   .addClass("col-8 description text-left")
@@ -60,16 +79,15 @@ $(".time-block").on("blur", "textarea", function() {
   // replace textarea with div element
   $(this).replaceWith(taskDiv);
 
-  if ( text === "") {
-    
-  }
+  // empty out array instead of array of ""
+  // if ( text == "" ) {
+  // function () {
+  //   let tempArr = [];
+  //  }
+  // }
 });
 
 // save button saves $(this) to page and calls localStorage save
-
-// localStorage save function array of objects
-
-// localStorage load function JSON.parse array of objects
 
 // moment for current day and time, print time to screen
 
@@ -79,4 +97,4 @@ $(".time-block").on("blur", "textarea", function() {
 
 // setInterval check for hour changeover
 
-loadTasks();
+loadSchedule ();
