@@ -23,23 +23,17 @@ function loadSchedule () {
 
   // loop to fill in schedule
   $.each(schedule, function(time, text) {
-    // console.log(time, text)
-
-    // arr.forEach(function(schedule) {
       $("#" + time + " .description").text(text);
-    // });
   });
 };
 
 // localStorage save function array of objects
 function saveSchedule() {
-  // console.log(schedule);
   localStorage.setItem("schedule", JSON.stringify(schedule));
 };
 
 // jquery target text info for clicked timeblock
 $(".time-block").on("click", ".description", function() {
-  //console.log($(this))
 
   // select clicked entry
   let text = $(this)
@@ -64,40 +58,22 @@ $(".time-block").on("blur", "textarea", function() {
   .val()
   .trim();
 
-  // get parent div.time-block
-  // let status = $(this)
-  // .closest(".time-block")
-  // .attr("id");
-
-  // schedule[status][0] = text;
-  // saveSchedule();
-  // console.log(schedule);
-
   let taskDiv = $("<div>")
-  .addClass("col-8 description text-left")
+  .addClass("col-8 description text-light text-left")
   .text(text);
 
   // replace textarea with div element
   $(this).replaceWith(taskDiv);
 
   timeCheck();
-
-  // empty out array instead of array of ""
-  // if ( text == "" ) {
-  // function () {
-  //   let tempArr = [];
-  //  }
-  // }
 });
 
 // check current time and adjust colors for past, present, future
 function auditSchedule (currentTime, scheduleEl) {
-  //console.log(currentTime);
-  // debugger;
+  
   let timeBlock = $(scheduleEl).find(" > div.description");
   let timeSlot = $(scheduleEl).attr("data-time");
-  // console.log(currentTime)
-  // console.log(timeSlot)
+  
   $(timeBlock).removeClass("bg-secondary bg-danger bg-success");
 
   if ( currentTime < timeSlot ) {
@@ -112,29 +88,31 @@ function auditSchedule (currentTime, scheduleEl) {
 
 }
 
-// save button saves $(this) to page and calls localStorage save
+// save button
 $(".icon").click(function() {
-  console.log("a button was clicked")
 
-    // get changed text area text
-    let text = $(this).parent().siblings(".description").text();
+  // get changed text area text
+  let text = $(this).parent().siblings(".description").text();
 
-    console.log(text)
-    // get parent div.time-block
-    let status = $(this)
-    .closest(".time-block")
-    .attr("id");
-    console.log(status)
+  // get parent div.time-block
+  let status = $(this)
+  .closest(".time-block")
+  .attr("id");
 
+  // update schedule object
+  if (!text) {
+    schedule[status] = [];
+  }
+  else {
     schedule[status][0] = text;
-    saveSchedule();
-    console.log(schedule);
-
+  }
+  
+  saveSchedule();
 });
 
 // moment for current day and time
 function timeCheck() {
-  let currentDate = moment().format("MMM Do [,] YYYY");
+  let currentDate = moment().format("dddd, MMMM Do");
   let currentTime = moment().format("H");
 
   $(".time-block").each(function() {
@@ -155,7 +133,6 @@ function timeCheck() {
 function setDate(currentDate) {
   date = currentDate;
   $("#currentDay").text(date)
-  console.log(date)
 }
 
 loadSchedule ();
